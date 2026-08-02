@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { getBlogs, getBlogById, createBlog, updateBlog, deleteBlog } = require('./blog.controller');
-const { protect } = require('../../middleware/authMiddleware');
+import { getBlogs, getBlogById, createBlog, updateBlog, deleteBlog  } from './blog.controller.js';
+import { protect  } from '../../middleware/authMiddleware.js';
 
 router.route('/')
   .get(getBlogs)
@@ -12,4 +12,4 @@ router.route('/:id')
   .put(protect, updateBlog)
   .delete(protect, deleteBlog);
 
-module.exports = router;
+export default router;

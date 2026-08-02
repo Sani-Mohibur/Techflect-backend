@@ -1,4 +1,4 @@
-const Service = require('./service.model');
+import Service from './service.model.js';
 
 const getServices = async (req, res) => {
   const items = await Service.find();
@@ -29,4 +29,4 @@ const deleteService = async (req, res) => {
   res.status(200).json({ id: req.params.id });
 };
 
-module.exports = { getServices, getServiceById, createService, updateService, deleteService };
+export { getServices, getServiceById, createService, updateService, deleteService  };

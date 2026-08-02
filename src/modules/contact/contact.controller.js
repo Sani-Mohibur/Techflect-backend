@@ -1,5 +1,5 @@
-const Contact = require('./contact.model');
-const sendEmail = require('../../utils/emailService');
+import Contact from './contact.model.js';
+import sendEmail from '../../utils/emailService.js';
 
 const createContact = async (req, res) => {
   const { name, email, subject, message } = req.body;
@@ -54,9 +54,8 @@ const deleteContact = async (req, res) => {
   res.status(200).json({ id: req.params.id });
 };
 
-module.exports = {
-  createContact,
+export { createContact,
   getContacts,
   getContactById,
   deleteContact
-};
+ };

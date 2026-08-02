@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { getCaseStudys, getCaseStudyById, createCaseStudy, updateCaseStudy, deleteCaseStudy } = require('./caseStudy.controller');
-const { protect } = require('../../middleware/authMiddleware');
+import { getCaseStudys, getCaseStudyById, createCaseStudy, updateCaseStudy, deleteCaseStudy  } from './caseStudy.controller.js';
+import { protect  } from '../../middleware/authMiddleware.js';
 
 router.route('/')
   .get(getCaseStudys)
@@ -12,4 +12,4 @@ router.route('/:id')
   .put(protect, updateCaseStudy)
   .delete(protect, deleteCaseStudy);
 
-module.exports = router;
+export default router;

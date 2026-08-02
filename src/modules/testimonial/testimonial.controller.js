@@ -1,4 +1,4 @@
-const Testimonial = require('./testimonial.model');
+import Testimonial from './testimonial.model.js';
 
 const getTestimonials = async (req, res) => {
   const items = await Testimonial.find();
@@ -29,4 +29,4 @@ const deleteTestimonial = async (req, res) => {
   res.status(200).json({ id: req.params.id });
 };
 
-module.exports = { getTestimonials, getTestimonialById, createTestimonial, updateTestimonial, deleteTestimonial };
+export { getTestimonials, getTestimonialById, createTestimonial, updateTestimonial, deleteTestimonial  };

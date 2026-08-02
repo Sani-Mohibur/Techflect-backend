@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { getTeamMembers, getTeamMemberById, createTeamMember, updateTeamMember, deleteTeamMember } = require('./teamMember.controller');
-const { protect } = require('../../middleware/authMiddleware');
+import { getTeamMembers, getTeamMemberById, createTeamMember, updateTeamMember, deleteTeamMember  } from './teamMember.controller.js';
+import { protect  } from '../../middleware/authMiddleware.js';
 
 router.route('/')
   .get(getTeamMembers)
@@ -12,4 +12,4 @@ router.route('/:id')
   .put(protect, updateTeamMember)
   .delete(protect, deleteTeamMember);
 
-module.exports = router;
+export default router;

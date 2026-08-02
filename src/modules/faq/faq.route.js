@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { getFAQs, getFAQById, createFAQ, updateFAQ, deleteFAQ } = require('./faq.controller');
-const { protect } = require('../../middleware/authMiddleware');
+import { getFAQs, getFAQById, createFAQ, updateFAQ, deleteFAQ  } from './faq.controller.js';
+import { protect  } from '../../middleware/authMiddleware.js';
 
 router.route('/')
   .get(getFAQs)
@@ -12,4 +12,4 @@ router.route('/:id')
   .put(protect, updateFAQ)
   .delete(protect, deleteFAQ);
 
-module.exports = router;
+export default router;

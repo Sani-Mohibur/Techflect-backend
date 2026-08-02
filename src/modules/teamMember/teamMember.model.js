@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const teamMemberSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -7,4 +7,4 @@ const teamMemberSchema = new mongoose.Schema({
   profilePhotoUrl: { type: String }
 }, { timestamps: true });
 
-module.exports = mongoose.model('TeamMember', teamMemberSchema);
+export default mongoose.model('TeamMember', teamMemberSchema);

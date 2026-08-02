@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const caseStudySchema = new mongoose.Schema({
   clientName: { type: String, required: true },
@@ -13,4 +13,4 @@ const caseStudySchema = new mongoose.Schema({
   }]
 }, { timestamps: true });
 
-module.exports = mongoose.model('CaseStudy', caseStudySchema);
+export default mongoose.model('CaseStudy', caseStudySchema);

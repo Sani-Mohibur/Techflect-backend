@@ -1,22 +1,23 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const { errorHandler, notFound } = require('./middleware/errorMiddleware');
-const connectDB = require('./config/db');
+import dotenv from 'dotenv';
+dotenv.config();
+import express from 'express';
+import cors from 'cors';
+import { errorHandler, notFound  } from './middleware/errorMiddleware.js';
+import connectDB from './config/db.js';
 
 // Connect to database
 connectDB();
 
 // Routes imports
-const authRoutes = require('./modules/auth/auth.route');
-const contactRoutes = require('./modules/contact/contact.route');
-const serviceRoutes = require('./modules/service/service.route');
-const projectRoutes = require('./modules/project/project.route');
-const caseStudyRoutes = require('./modules/caseStudy/caseStudy.route');
-const testimonialRoutes = require('./modules/testimonial/testimonial.route');
-const blogRoutes = require('./modules/blog/blog.route');
-const teamMemberRoutes = require('./modules/teamMember/teamMember.route');
-const faqRoutes = require('./modules/faq/faq.route');
+import authRoutes from './modules/auth/auth.route.js';
+import contactRoutes from './modules/contact/contact.route.js';
+import serviceRoutes from './modules/service/service.route.js';
+import projectRoutes from './modules/project/project.route.js';
+import caseStudyRoutes from './modules/caseStudy/caseStudy.route.js';
+import testimonialRoutes from './modules/testimonial/testimonial.route.js';
+import blogRoutes from './modules/blog/blog.route.js';
+import teamMemberRoutes from './modules/teamMember/teamMember.route.js';
+import faqRoutes from './modules/faq/faq.route.js';
 
 const app = express();
 
@@ -41,4 +42,4 @@ app.use('/api/faqs', faqRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
-module.exports = app;
+export default app;

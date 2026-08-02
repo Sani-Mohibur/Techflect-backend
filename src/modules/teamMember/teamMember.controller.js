@@ -1,4 +1,4 @@
-const TeamMember = require('./teamMember.model');
+import TeamMember from './teamMember.model.js';
 
 const getTeamMembers = async (req, res) => {
   const items = await TeamMember.find();
@@ -29,4 +29,4 @@ const deleteTeamMember = async (req, res) => {
   res.status(200).json({ id: req.params.id });
 };
 
-module.exports = { getTeamMembers, getTeamMemberById, createTeamMember, updateTeamMember, deleteTeamMember };
+export { getTeamMembers, getTeamMemberById, createTeamMember, updateTeamMember, deleteTeamMember  };

@@ -1,4 +1,4 @@
-const Project = require('./project.model');
+import Project from './project.model.js';
 
 const getProjects = async (req, res) => {
   const items = await Project.find();
@@ -29,4 +29,4 @@ const deleteProject = async (req, res) => {
   res.status(200).json({ id: req.params.id });
 };
 
-module.exports = { getProjects, getProjectById, createProject, updateProject, deleteProject };
+export { getProjects, getProjectById, createProject, updateProject, deleteProject  };

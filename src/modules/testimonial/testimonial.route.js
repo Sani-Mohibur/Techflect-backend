@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { getTestimonials, getTestimonialById, createTestimonial, updateTestimonial, deleteTestimonial } = require('./testimonial.controller');
-const { protect } = require('../../middleware/authMiddleware');
+import { getTestimonials, getTestimonialById, createTestimonial, updateTestimonial, deleteTestimonial  } from './testimonial.controller.js';
+import { protect  } from '../../middleware/authMiddleware.js';
 
 router.route('/')
   .get(getTestimonials)
@@ -12,4 +12,4 @@ router.route('/:id')
   .put(protect, updateTestimonial)
   .delete(protect, deleteTestimonial);
 
-module.exports = router;
+export default router;

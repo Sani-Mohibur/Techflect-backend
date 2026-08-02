@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { getProjects, getProjectById, createProject, updateProject, deleteProject } = require('./project.controller');
-const { protect } = require('../../middleware/authMiddleware');
+import { getProjects, getProjectById, createProject, updateProject, deleteProject  } from './project.controller.js';
+import { protect  } from '../../middleware/authMiddleware.js';
 
 router.route('/')
   .get(getProjects)
@@ -12,4 +12,4 @@ router.route('/:id')
   .put(protect, updateProject)
   .delete(protect, deleteProject);
 
-module.exports = router;
+export default router;

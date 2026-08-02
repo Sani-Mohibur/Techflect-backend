@@ -1,4 +1,4 @@
-const Blog = require('./blog.model');
+import Blog from './blog.model.js';
 
 const getBlogs = async (req, res) => {
   const items = await Blog.find();
@@ -29,4 +29,4 @@ const deleteBlog = async (req, res) => {
   res.status(200).json({ id: req.params.id });
 };
 
-module.exports = { getBlogs, getBlogById, createBlog, updateBlog, deleteBlog };
+export { getBlogs, getBlogById, createBlog, updateBlog, deleteBlog  };

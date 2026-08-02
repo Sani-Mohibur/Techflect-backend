@@ -1,4 +1,4 @@
-const FAQ = require('./faq.model');
+import FAQ from './faq.model.js';
 
 const getFAQs = async (req, res) => {
   const items = await FAQ.find();
@@ -29,4 +29,4 @@ const deleteFAQ = async (req, res) => {
   res.status(200).json({ id: req.params.id });
 };
 
-module.exports = { getFAQs, getFAQById, createFAQ, updateFAQ, deleteFAQ };
+export { getFAQs, getFAQById, createFAQ, updateFAQ, deleteFAQ  };

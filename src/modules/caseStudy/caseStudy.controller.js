@@ -1,4 +1,4 @@
-const CaseStudy = require('./caseStudy.model');
+import CaseStudy from './caseStudy.model.js';
 
 const getCaseStudys = async (req, res) => {
   const items = await CaseStudy.find();
@@ -29,4 +29,4 @@ const deleteCaseStudy = async (req, res) => {
   res.status(200).json({ id: req.params.id });
 };
 
-module.exports = { getCaseStudys, getCaseStudyById, createCaseStudy, updateCaseStudy, deleteCaseStudy };
+export { getCaseStudys, getCaseStudyById, createCaseStudy, updateCaseStudy, deleteCaseStudy  };
