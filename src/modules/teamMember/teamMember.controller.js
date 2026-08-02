@@ -1,4 +1,4 @@
-const TeamMember = require('./TeamMember');
+const TeamMember = require('./teamMember.model');
 
 const getTeamMembers = async (req, res) => {
   const items = await TeamMember.find();

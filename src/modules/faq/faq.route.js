@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { getFAQs, getFAQById, createFAQ, updateFAQ, deleteFAQ } = require('./fAQController');
+const { getFAQs, getFAQById, createFAQ, updateFAQ, deleteFAQ } = require('./faq.controller');
 const { protect } = require('../../middleware/authMiddleware');
 
 router.route('/')

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { createContact, getContacts, getContactById, deleteContact } = require('./contactController');
+const { createContact, getContacts, getContactById, deleteContact } = require('./contact.controller');
 const { protect } = require('../../middleware/authMiddleware');
 
 router.route('/')

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { getServices, getServiceById, createService, updateService, deleteService } = require('./serviceController');
+const { getServices, getServiceById, createService, updateService, deleteService } = require('./service.controller');
 const { protect } = require('../../middleware/authMiddleware');
 
 router.route('/')

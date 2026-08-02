@@ -8,15 +8,15 @@ const connectDB = require('./config/db');
 connectDB();
 
 // Routes imports
-const authRoutes = require('./modules/auth/authRoutes');
-const contactRoutes = require('./modules/contact/contactRoutes');
-const serviceRoutes = require('./modules/service/serviceRoutes');
-const projectRoutes = require('./modules/project/projectRoutes');
-const caseStudyRoutes = require('./modules/caseStudy/caseStudyRoutes');
-const testimonialRoutes = require('./modules/testimonial/testimonialRoutes');
-const blogRoutes = require('./modules/blog/blogRoutes');
-const teamMemberRoutes = require('./modules/teamMember/teamMemberRoutes');
-const faqRoutes = require('./modules/faq/fAQRoutes');
+const authRoutes = require('./modules/auth/auth.route');
+const contactRoutes = require('./modules/contact/contact.route');
+const serviceRoutes = require('./modules/service/service.route');
+const projectRoutes = require('./modules/project/project.route');
+const caseStudyRoutes = require('./modules/caseStudy/caseStudy.route');
+const testimonialRoutes = require('./modules/testimonial/testimonial.route');
+const blogRoutes = require('./modules/blog/blog.route');
+const teamMemberRoutes = require('./modules/teamMember/teamMember.route');
+const faqRoutes = require('./modules/faq/faq.route');
 
 const app = express();
 

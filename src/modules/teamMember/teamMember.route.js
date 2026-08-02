@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { getTeamMembers, getTeamMemberById, createTeamMember, updateTeamMember, deleteTeamMember } = require('./teamMemberController');
+const { getTeamMembers, getTeamMemberById, createTeamMember, updateTeamMember, deleteTeamMember } = require('./teamMember.controller');
 const { protect } = require('../../middleware/authMiddleware');
 
 router.route('/')

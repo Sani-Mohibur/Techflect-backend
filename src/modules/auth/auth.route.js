@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { loginAdmin, getMe } = require('./authController');
+const { loginAdmin, getMe } = require('./auth.controller');
 const { protect } = require('../../middleware/authMiddleware');
 
 router.post('/login', loginAdmin);

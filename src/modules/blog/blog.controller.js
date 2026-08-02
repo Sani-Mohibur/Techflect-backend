@@ -1,4 +1,4 @@
-const Blog = require('./Blog');
+const Blog = require('./blog.model');
 
 const getBlogs = async (req, res) => {
   const items = await Blog.find();

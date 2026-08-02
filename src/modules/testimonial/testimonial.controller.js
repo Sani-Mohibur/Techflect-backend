@@ -1,4 +1,4 @@
-const Testimonial = require('./Testimonial');
+const Testimonial = require('./testimonial.model');
 
 const getTestimonials = async (req, res) => {
   const items = await Testimonial.find();

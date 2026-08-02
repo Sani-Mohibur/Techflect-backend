@@ -1,4 +1,4 @@
-const FAQ = require('./FAQ');
+const FAQ = require('./faq.model');
 
 const getFAQs = async (req, res) => {
   const items = await FAQ.find();
