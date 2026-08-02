@@ -1,4 +1,4 @@
-const CaseStudy = require('../models/CaseStudy');
+const CaseStudy = require('./CaseStudy');
 
 const getCaseStudys = async (req, res) => {
   const items = await CaseStudy.find();

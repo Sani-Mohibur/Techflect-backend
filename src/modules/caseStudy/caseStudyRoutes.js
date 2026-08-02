@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { getCaseStudys, getCaseStudyById, createCaseStudy, updateCaseStudy, deleteCaseStudy } = require('../controllers/caseStudyController');
-const { protect } = require('../middleware/authMiddleware');
+const { getCaseStudys, getCaseStudyById, createCaseStudy, updateCaseStudy, deleteCaseStudy } = require('./caseStudyController');
+const { protect } = require('../../middleware/authMiddleware');
 
 router.route('/')
   .get(getCaseStudys)

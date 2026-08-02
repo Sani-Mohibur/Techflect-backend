@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { getTeamMembers, getTeamMemberById, createTeamMember, updateTeamMember, deleteTeamMember } = require('../controllers/teamMemberController');
-const { protect } = require('../middleware/authMiddleware');
+const { getTeamMembers, getTeamMemberById, createTeamMember, updateTeamMember, deleteTeamMember } = require('./teamMemberController');
+const { protect } = require('../../middleware/authMiddleware');
 
 router.route('/')
   .get(getTeamMembers)

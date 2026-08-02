@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { getFAQs, getFAQById, createFAQ, updateFAQ, deleteFAQ } = require('../controllers/fAQController');
-const { protect } = require('../middleware/authMiddleware');
+const { getFAQs, getFAQById, createFAQ, updateFAQ, deleteFAQ } = require('./fAQController');
+const { protect } = require('../../middleware/authMiddleware');
 
 router.route('/')
   .get(getFAQs)

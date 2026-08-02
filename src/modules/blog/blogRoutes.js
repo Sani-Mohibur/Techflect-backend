@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { getBlogs, getBlogById, createBlog, updateBlog, deleteBlog } = require('../controllers/blogController');
-const { protect } = require('../middleware/authMiddleware');
+const { getBlogs, getBlogById, createBlog, updateBlog, deleteBlog } = require('./blogController');
+const { protect } = require('../../middleware/authMiddleware');
 
 router.route('/')
   .get(getBlogs)

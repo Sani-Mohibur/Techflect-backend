@@ -1,4 +1,4 @@
-const Service = require('../models/Service');
+const Service = require('./Service');
 
 const getServices = async (req, res) => {
   const items = await Service.find();
