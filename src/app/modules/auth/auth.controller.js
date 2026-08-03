@@ -1,69 +1,84 @@
 import { AuthService } from './auth.service.js';
+import catchAsync from '../../utils/catchAsync.js';
+import sendResponse from '../../utils/sendResponse.js';
+import pick from '../../utils/pick.js';
 
-const loginAdmin = async (req, res) => {
+const loginAdmin = catchAsync(async (req, res) => {
   const { email, password } = req.body;
   const result = await AuthService.loginAdmin(email, password);
 
-  if (result.error) {
-    res.status(result.status);
-    throw new Error(result.error);
-  }
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'User logged in successfully',
+    data: result,
+  });
+});
 
-  res.json(result);
-};
+const getMe = catchAsync(async (req, res) => {
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'User profile retrieved successfully',
+    data: req.admin,
+  });
+});
 
-const getMe = async (req, res) => {
-  res.status(200).json(req.admin);
-};
+const getUsers = catchAsync(async (req, res) => {
+  const filters = pick(req.query, ['searchTerm', 'sort', 'limit', 'page', 'fields', 'email', 'role']);
+  const users = await AuthService.getUsers(filters);
+  
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Users retrieved successfully',
+    data: users,
+  });
+});
 
-const getUsers = async (req, res) => {
-  const users = await AuthService.getUsers();
-  res.status(200).json(users);
-};
-
-const createUser = async (req, res) => {
+const createUser = catchAsync(async (req, res) => {
   const result = await AuthService.createUser(req.body);
   
-  if (result.error) {
-    res.status(result.status);
-    throw new Error(result.error);
-  }
+  sendResponse(res, {
+    statusCode: 201,
+    success: true,
+    message: 'User created successfully',
+    data: result,
+  });
+});
 
-  res.status(201).json(result);
-};
-
-const updateUser = async (req, res) => {
+const updateUser = catchAsync(async (req, res) => {
   const result = await AuthService.updateUser(req.params.id, req.body);
 
-  if (result.error) {
-    res.status(result.status);
-    throw new Error(result.error);
-  }
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'User updated successfully',
+    data: result,
+  });
+});
 
-  res.status(200).json(result);
-};
-
-const deleteUser = async (req, res) => {
+const deleteUser = catchAsync(async (req, res) => {
   const result = await AuthService.deleteUser(req.params.id);
 
-  if (result.error) {
-    res.status(result.status);
-    throw new Error(result.error);
-  }
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'User deleted successfully',
+    data: result,
+  });
+});
 
-  res.status(200).json(result);
-};
-
-const toggleBlockUser = async (req, res) => {
+const toggleBlockUser = catchAsync(async (req, res) => {
   const result = await AuthService.toggleBlockUser(req.params.id);
 
-  if (result.error) {
-    res.status(result.status);
-    throw new Error(result.error);
-  }
-
-  res.status(200).json(result);
-};
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'User block status updated successfully',
+    data: result,
+  });
+});
 
 export { 
   loginAdmin,

@@ -1,31 +1,57 @@
 import { TestimonialService } from './testimonial.service.js';
+import catchAsync from '../../utils/catchAsync.js';
+import sendResponse from '../../utils/sendResponse.js';
+import pick from '../../utils/pick.js';
 
-const getTestimonials = async (req, res) => {
-  const items = await TestimonialService.getTestimonials();
-  res.status(200).json(items);
-};
+const getTestimonials = catchAsync(async (req, res) => {
+  const filters = pick(req.query, ['searchTerm', 'sort', 'limit', 'page', 'fields', 'name']);
+  const items = await TestimonialService.getTestimonials(filters);
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Testimonials retrieved successfully',
+    data: items,
+  });
+});
 
-const getTestimonialById = async (req, res) => {
+const getTestimonialById = catchAsync(async (req, res) => {
   const item = await TestimonialService.getTestimonialById(req.params.id);
-  if (!item) { res.status(404); throw new Error('Testimonial not found'); }
-  res.status(200).json(item);
-};
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Testimonial retrieved successfully',
+    data: item,
+  });
+});
 
-const createTestimonial = async (req, res) => {
+const createTestimonial = catchAsync(async (req, res) => {
   const item = await TestimonialService.createTestimonial(req.body);
-  res.status(201).json(item);
-};
+  sendResponse(res, {
+    statusCode: 201,
+    success: true,
+    message: 'Testimonial created successfully',
+    data: item,
+  });
+});
 
-const updateTestimonial = async (req, res) => {
+const updateTestimonial = catchAsync(async (req, res) => {
   const item = await TestimonialService.updateTestimonial(req.params.id, req.body);
-  if (!item) { res.status(404); throw new Error('Testimonial not found'); }
-  res.status(200).json(item);
-};
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Testimonial updated successfully',
+    data: item,
+  });
+});
 
-const deleteTestimonial = async (req, res) => {
+const deleteTestimonial = catchAsync(async (req, res) => {
   const item = await TestimonialService.deleteTestimonial(req.params.id);
-  if (!item) { res.status(404); throw new Error('Testimonial not found'); }
-  res.status(200).json({ id: req.params.id });
-};
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Testimonial deleted successfully',
+    data: item,
+  });
+});
 
 export { getTestimonials, getTestimonialById, createTestimonial, updateTestimonial, deleteTestimonial };

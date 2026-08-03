@@ -1,31 +1,57 @@
 import { TeamMemberService } from './teamMember.service.js';
+import catchAsync from '../../utils/catchAsync.js';
+import sendResponse from '../../utils/sendResponse.js';
+import pick from '../../utils/pick.js';
 
-const getTeamMembers = async (req, res) => {
-  const items = await TeamMemberService.getTeamMembers();
-  res.status(200).json(items);
-};
+const getTeamMembers = catchAsync(async (req, res) => {
+  const filters = pick(req.query, ['searchTerm', 'sort', 'limit', 'page', 'fields', 'name', 'jobTitle']);
+  const items = await TeamMemberService.getTeamMembers(filters);
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Team members retrieved successfully',
+    data: items,
+  });
+});
 
-const getTeamMemberById = async (req, res) => {
+const getTeamMemberById = catchAsync(async (req, res) => {
   const item = await TeamMemberService.getTeamMemberById(req.params.id);
-  if (!item) { res.status(404); throw new Error('TeamMember not found'); }
-  res.status(200).json(item);
-};
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Team member retrieved successfully',
+    data: item,
+  });
+});
 
-const createTeamMember = async (req, res) => {
+const createTeamMember = catchAsync(async (req, res) => {
   const item = await TeamMemberService.createTeamMember(req.body);
-  res.status(201).json(item);
-};
+  sendResponse(res, {
+    statusCode: 201,
+    success: true,
+    message: 'Team member created successfully',
+    data: item,
+  });
+});
 
-const updateTeamMember = async (req, res) => {
+const updateTeamMember = catchAsync(async (req, res) => {
   const item = await TeamMemberService.updateTeamMember(req.params.id, req.body);
-  if (!item) { res.status(404); throw new Error('TeamMember not found'); }
-  res.status(200).json(item);
-};
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Team member updated successfully',
+    data: item,
+  });
+});
 
-const deleteTeamMember = async (req, res) => {
+const deleteTeamMember = catchAsync(async (req, res) => {
   const item = await TeamMemberService.deleteTeamMember(req.params.id);
-  if (!item) { res.status(404); throw new Error('TeamMember not found'); }
-  res.status(200).json({ id: req.params.id });
-};
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Team member deleted successfully',
+    data: item,
+  });
+});
 
 export { getTeamMembers, getTeamMemberById, createTeamMember, updateTeamMember, deleteTeamMember };

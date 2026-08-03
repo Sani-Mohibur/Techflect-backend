@@ -1,5 +1,7 @@
 import Contact from './contact.model.js';
 import sendEmail from '../../utils/emailService.js';
+import QueryBuilder from '../../builder/QueryBuilder.js';
+import AppError from '../../errors/AppError.js';
 
 const createContact = async (payload) => {
   const { name, email, subject, message } = payload;
@@ -29,19 +31,31 @@ const createContact = async (payload) => {
   return contact;
 };
 
-const getContacts = async () => {
-  return await Contact.find().sort({ createdAt: -1 });
+const getContacts = async (query) => {
+  const contactQuery = new QueryBuilder(Contact.find(), query)
+    .search(['name', 'email', 'subject'])
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+  
+  return await contactQuery.modelQuery;
 };
 
 const getContactById = async (id) => {
-  return await Contact.findById(id);
+  const contact = await Contact.findById(id);
+  if (!contact) {
+    throw new AppError(404, 'Contact not found');
+  }
+  return contact;
 };
 
 const deleteContact = async (id) => {
   const contact = await Contact.findById(id);
-  if (contact) {
-    await contact.deleteOne();
+  if (!contact) {
+    throw new AppError(404, 'Contact not found');
   }
+  await contact.deleteOne();
   return contact;
 };
 

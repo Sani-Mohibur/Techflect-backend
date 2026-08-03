@@ -1,31 +1,57 @@
 import { ProjectService } from './project.service.js';
+import catchAsync from '../../utils/catchAsync.js';
+import sendResponse from '../../utils/sendResponse.js';
+import pick from '../../utils/pick.js';
 
-const getProjects = async (req, res) => {
-  const items = await ProjectService.getProjects();
-  res.status(200).json(items);
-};
+const getProjects = catchAsync(async (req, res) => {
+  const filters = pick(req.query, ['searchTerm', 'sort', 'limit', 'page', 'fields', 'title']);
+  const items = await ProjectService.getProjects(filters);
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Projects retrieved successfully',
+    data: items,
+  });
+});
 
-const getProjectById = async (req, res) => {
+const getProjectById = catchAsync(async (req, res) => {
   const item = await ProjectService.getProjectById(req.params.id);
-  if (!item) { res.status(404); throw new Error('Project not found'); }
-  res.status(200).json(item);
-};
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Project retrieved successfully',
+    data: item,
+  });
+});
 
-const createProject = async (req, res) => {
+const createProject = catchAsync(async (req, res) => {
   const item = await ProjectService.createProject(req.body);
-  res.status(201).json(item);
-};
+  sendResponse(res, {
+    statusCode: 201,
+    success: true,
+    message: 'Project created successfully',
+    data: item,
+  });
+});
 
-const updateProject = async (req, res) => {
+const updateProject = catchAsync(async (req, res) => {
   const item = await ProjectService.updateProject(req.params.id, req.body);
-  if (!item) { res.status(404); throw new Error('Project not found'); }
-  res.status(200).json(item);
-};
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Project updated successfully',
+    data: item,
+  });
+});
 
-const deleteProject = async (req, res) => {
+const deleteProject = catchAsync(async (req, res) => {
   const item = await ProjectService.deleteProject(req.params.id);
-  if (!item) { res.status(404); throw new Error('Project not found'); }
-  res.status(200).json({ id: req.params.id });
-};
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Project deleted successfully',
+    data: item,
+  });
+});
 
 export { getProjects, getProjectById, createProject, updateProject, deleteProject };

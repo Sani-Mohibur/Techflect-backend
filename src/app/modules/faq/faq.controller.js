@@ -1,31 +1,57 @@
 import { FAQService } from './faq.service.js';
+import catchAsync from '../../utils/catchAsync.js';
+import sendResponse from '../../utils/sendResponse.js';
+import pick from '../../utils/pick.js';
 
-const getFAQs = async (req, res) => {
-  const items = await FAQService.getFAQs();
-  res.status(200).json(items);
-};
+const getFAQs = catchAsync(async (req, res) => {
+  const filters = pick(req.query, ['searchTerm', 'sort', 'limit', 'page', 'fields', 'question']);
+  const items = await FAQService.getFAQs(filters);
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'FAQs retrieved successfully',
+    data: items,
+  });
+});
 
-const getFAQById = async (req, res) => {
+const getFAQById = catchAsync(async (req, res) => {
   const item = await FAQService.getFAQById(req.params.id);
-  if (!item) { res.status(404); throw new Error('FAQ not found'); }
-  res.status(200).json(item);
-};
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'FAQ retrieved successfully',
+    data: item,
+  });
+});
 
-const createFAQ = async (req, res) => {
+const createFAQ = catchAsync(async (req, res) => {
   const item = await FAQService.createFAQ(req.body);
-  res.status(201).json(item);
-};
+  sendResponse(res, {
+    statusCode: 201,
+    success: true,
+    message: 'FAQ created successfully',
+    data: item,
+  });
+});
 
-const updateFAQ = async (req, res) => {
+const updateFAQ = catchAsync(async (req, res) => {
   const item = await FAQService.updateFAQ(req.params.id, req.body);
-  if (!item) { res.status(404); throw new Error('FAQ not found'); }
-  res.status(200).json(item);
-};
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'FAQ updated successfully',
+    data: item,
+  });
+});
 
-const deleteFAQ = async (req, res) => {
+const deleteFAQ = catchAsync(async (req, res) => {
   const item = await FAQService.deleteFAQ(req.params.id);
-  if (!item) { res.status(404); throw new Error('FAQ not found'); }
-  res.status(200).json({ id: req.params.id });
-};
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'FAQ deleted successfully',
+    data: item,
+  });
+});
 
 export { getFAQs, getFAQById, createFAQ, updateFAQ, deleteFAQ };

@@ -1,11 +1,22 @@
 import CaseStudy from './caseStudy.model.js';
+import QueryBuilder from '../../builder/QueryBuilder.js';
+import AppError from '../../errors/AppError.js';
 
-const getCaseStudys = async () => {
-  return await CaseStudy.find();
+const getCaseStudys = async (query) => {
+  const caseStudyQuery = new QueryBuilder(CaseStudy.find(), query)
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+  return await caseStudyQuery.modelQuery;
 };
 
 const getCaseStudyById = async (id) => {
-  return await CaseStudy.findById(id);
+  const item = await CaseStudy.findById(id);
+  if (!item) {
+    throw new AppError(404, 'CaseStudy not found');
+  }
+  return item;
 };
 
 const createCaseStudy = async (payload) => {
@@ -13,14 +24,19 @@ const createCaseStudy = async (payload) => {
 };
 
 const updateCaseStudy = async (id, payload) => {
-  return await CaseStudy.findByIdAndUpdate(id, payload, { new: true });
+  const item = await CaseStudy.findByIdAndUpdate(id, payload, { new: true });
+  if (!item) {
+    throw new AppError(404, 'CaseStudy not found');
+  }
+  return item;
 };
 
 const deleteCaseStudy = async (id) => {
   const item = await CaseStudy.findById(id);
-  if (item) {
-    await item.deleteOne();
+  if (!item) {
+    throw new AppError(404, 'CaseStudy not found');
   }
+  await item.deleteOne();
   return item;
 };
 

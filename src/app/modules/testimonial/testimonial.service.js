@@ -1,11 +1,23 @@
 import Testimonial from './testimonial.model.js';
+import QueryBuilder from '../../builder/QueryBuilder.js';
+import AppError from '../../errors/AppError.js';
 
-const getTestimonials = async () => {
-  return await Testimonial.find();
+const getTestimonials = async (query) => {
+  const testimonialQuery = new QueryBuilder(Testimonial.find(), query)
+    .search(['name', 'designation', 'message'])
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+  return await testimonialQuery.modelQuery;
 };
 
 const getTestimonialById = async (id) => {
-  return await Testimonial.findById(id);
+  const item = await Testimonial.findById(id);
+  if (!item) {
+    throw new AppError(404, 'Testimonial not found');
+  }
+  return item;
 };
 
 const createTestimonial = async (payload) => {
@@ -13,14 +25,19 @@ const createTestimonial = async (payload) => {
 };
 
 const updateTestimonial = async (id, payload) => {
-  return await Testimonial.findByIdAndUpdate(id, payload, { new: true });
+  const item = await Testimonial.findByIdAndUpdate(id, payload, { new: true });
+  if (!item) {
+    throw new AppError(404, 'Testimonial not found');
+  }
+  return item;
 };
 
 const deleteTestimonial = async (id) => {
   const item = await Testimonial.findById(id);
-  if (item) {
-    await item.deleteOne();
+  if (!item) {
+    throw new AppError(404, 'Testimonial not found');
   }
+  await item.deleteOne();
   return item;
 };
 

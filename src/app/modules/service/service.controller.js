@@ -1,31 +1,57 @@
 import { ServiceService } from './service.service.js';
+import catchAsync from '../../utils/catchAsync.js';
+import sendResponse from '../../utils/sendResponse.js';
+import pick from '../../utils/pick.js';
 
-const getServices = async (req, res) => {
-  const items = await ServiceService.getServices();
-  res.status(200).json(items);
-};
+const getServices = catchAsync(async (req, res) => {
+  const filters = pick(req.query, ['searchTerm', 'sort', 'limit', 'page', 'fields', 'title']);
+  const items = await ServiceService.getServices(filters);
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Services retrieved successfully',
+    data: items,
+  });
+});
 
-const getServiceById = async (req, res) => {
+const getServiceById = catchAsync(async (req, res) => {
   const item = await ServiceService.getServiceById(req.params.id);
-  if (!item) { res.status(404); throw new Error('Service not found'); }
-  res.status(200).json(item);
-};
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Service retrieved successfully',
+    data: item,
+  });
+});
 
-const createService = async (req, res) => {
+const createService = catchAsync(async (req, res) => {
   const item = await ServiceService.createService(req.body);
-  res.status(201).json(item);
-};
+  sendResponse(res, {
+    statusCode: 201,
+    success: true,
+    message: 'Service created successfully',
+    data: item,
+  });
+});
 
-const updateService = async (req, res) => {
+const updateService = catchAsync(async (req, res) => {
   const item = await ServiceService.updateService(req.params.id, req.body);
-  if (!item) { res.status(404); throw new Error('Service not found'); }
-  res.status(200).json(item);
-};
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Service updated successfully',
+    data: item,
+  });
+});
 
-const deleteService = async (req, res) => {
+const deleteService = catchAsync(async (req, res) => {
   const item = await ServiceService.deleteService(req.params.id);
-  if (!item) { res.status(404); throw new Error('Service not found'); }
-  res.status(200).json({ id: req.params.id });
-};
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Service deleted successfully',
+    data: item,
+  });
+});
 
 export { getServices, getServiceById, createService, updateService, deleteService };

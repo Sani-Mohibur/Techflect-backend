@@ -1,11 +1,23 @@
 import Project from './project.model.js';
+import QueryBuilder from '../../builder/QueryBuilder.js';
+import AppError from '../../errors/AppError.js';
 
-const getProjects = async () => {
-  return await Project.find();
+const getProjects = async (query) => {
+  const projectQuery = new QueryBuilder(Project.find(), query)
+    .search(['title', 'description'])
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+  return await projectQuery.modelQuery;
 };
 
 const getProjectById = async (id) => {
-  return await Project.findById(id);
+  const item = await Project.findById(id);
+  if (!item) {
+    throw new AppError(404, 'Project not found');
+  }
+  return item;
 };
 
 const createProject = async (payload) => {
@@ -13,14 +25,19 @@ const createProject = async (payload) => {
 };
 
 const updateProject = async (id, payload) => {
-  return await Project.findByIdAndUpdate(id, payload, { new: true });
+  const item = await Project.findByIdAndUpdate(id, payload, { new: true });
+  if (!item) {
+    throw new AppError(404, 'Project not found');
+  }
+  return item;
 };
 
 const deleteProject = async (id) => {
   const item = await Project.findById(id);
-  if (item) {
-    await item.deleteOne();
+  if (!item) {
+    throw new AppError(404, 'Project not found');
   }
+  await item.deleteOne();
   return item;
 };
 

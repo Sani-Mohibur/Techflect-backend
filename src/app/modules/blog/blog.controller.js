@@ -1,31 +1,57 @@
 import { BlogService } from './blog.service.js';
+import catchAsync from '../../utils/catchAsync.js';
+import sendResponse from '../../utils/sendResponse.js';
+import pick from '../../utils/pick.js';
 
-const getBlogs = async (req, res) => {
-  const items = await BlogService.getBlogs();
-  res.status(200).json(items);
-};
+const getBlogs = catchAsync(async (req, res) => {
+  const filters = pick(req.query, ['searchTerm', 'sort', 'limit', 'page', 'fields', 'title']);
+  const items = await BlogService.getBlogs(filters);
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Blogs retrieved successfully',
+    data: items,
+  });
+});
 
-const getBlogById = async (req, res) => {
+const getBlogById = catchAsync(async (req, res) => {
   const item = await BlogService.getBlogById(req.params.id);
-  if (!item) { res.status(404); throw new Error('Blog not found'); }
-  res.status(200).json(item);
-};
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Blog retrieved successfully',
+    data: item,
+  });
+});
 
-const createBlog = async (req, res) => {
+const createBlog = catchAsync(async (req, res) => {
   const item = await BlogService.createBlog(req.body);
-  res.status(201).json(item);
-};
+  sendResponse(res, {
+    statusCode: 201,
+    success: true,
+    message: 'Blog created successfully',
+    data: item,
+  });
+});
 
-const updateBlog = async (req, res) => {
+const updateBlog = catchAsync(async (req, res) => {
   const item = await BlogService.updateBlog(req.params.id, req.body);
-  if (!item) { res.status(404); throw new Error('Blog not found'); }
-  res.status(200).json(item);
-};
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Blog updated successfully',
+    data: item,
+  });
+});
 
-const deleteBlog = async (req, res) => {
+const deleteBlog = catchAsync(async (req, res) => {
   const item = await BlogService.deleteBlog(req.params.id);
-  if (!item) { res.status(404); throw new Error('Blog not found'); }
-  res.status(200).json({ id: req.params.id });
-};
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Blog deleted successfully',
+    data: item,
+  });
+});
 
 export { getBlogs, getBlogById, createBlog, updateBlog, deleteBlog };

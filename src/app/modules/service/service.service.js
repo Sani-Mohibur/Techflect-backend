@@ -1,11 +1,23 @@
 import Service from './service.model.js';
+import QueryBuilder from '../../builder/QueryBuilder.js';
+import AppError from '../../errors/AppError.js';
 
-const getServices = async () => {
-  return await Service.find();
+const getServices = async (query) => {
+  const serviceQuery = new QueryBuilder(Service.find(), query)
+    .search(['title', 'description'])
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+  return await serviceQuery.modelQuery;
 };
 
 const getServiceById = async (id) => {
-  return await Service.findById(id);
+  const item = await Service.findById(id);
+  if (!item) {
+    throw new AppError(404, 'Service not found');
+  }
+  return item;
 };
 
 const createService = async (payload) => {
@@ -13,14 +25,19 @@ const createService = async (payload) => {
 };
 
 const updateService = async (id, payload) => {
-  return await Service.findByIdAndUpdate(id, payload, { new: true });
+  const item = await Service.findByIdAndUpdate(id, payload, { new: true });
+  if (!item) {
+    throw new AppError(404, 'Service not found');
+  }
+  return item;
 };
 
 const deleteService = async (id) => {
   const item = await Service.findById(id);
-  if (item) {
-    await item.deleteOne();
+  if (!item) {
+    throw new AppError(404, 'Service not found');
   }
+  await item.deleteOne();
   return item;
 };
 

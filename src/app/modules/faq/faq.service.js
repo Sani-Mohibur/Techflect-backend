@@ -1,11 +1,23 @@
 import FAQ from './faq.model.js';
+import QueryBuilder from '../../builder/QueryBuilder.js';
+import AppError from '../../errors/AppError.js';
 
-const getFAQs = async () => {
-  return await FAQ.find();
+const getFAQs = async (query) => {
+  const faqQuery = new QueryBuilder(FAQ.find(), query)
+    .search(['question', 'answer'])
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+  return await faqQuery.modelQuery;
 };
 
 const getFAQById = async (id) => {
-  return await FAQ.findById(id);
+  const item = await FAQ.findById(id);
+  if (!item) {
+    throw new AppError(404, 'FAQ not found');
+  }
+  return item;
 };
 
 const createFAQ = async (payload) => {
@@ -13,14 +25,19 @@ const createFAQ = async (payload) => {
 };
 
 const updateFAQ = async (id, payload) => {
-  return await FAQ.findByIdAndUpdate(id, payload, { new: true });
+  const item = await FAQ.findByIdAndUpdate(id, payload, { new: true });
+  if (!item) {
+    throw new AppError(404, 'FAQ not found');
+  }
+  return item;
 };
 
 const deleteFAQ = async (id) => {
   const item = await FAQ.findById(id);
-  if (item) {
-    await item.deleteOne();
+  if (!item) {
+    throw new AppError(404, 'FAQ not found');
   }
+  await item.deleteOne();
   return item;
 };
 

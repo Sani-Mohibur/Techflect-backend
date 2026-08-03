@@ -1,6 +1,8 @@
 import Admin from './admin.model.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import QueryBuilder from '../../builder/QueryBuilder.js';
+import AppError from '../../errors/AppError.js';
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -13,7 +15,7 @@ const loginAdmin = async (email, password) => {
 
   if (admin && (await bcrypt.compare(password, admin.password))) {
     if (admin.isBlocked) {
-      return { error: 'Not authorized, user is blocked', status: 403 };
+      throw new AppError(403, 'Not authorized, user is blocked');
     }
     return {
       _id: admin.id,
@@ -23,19 +25,25 @@ const loginAdmin = async (email, password) => {
       token: generateToken(admin.id),
     };
   } else {
-    return { error: 'Invalid email or password', status: 401 };
+    throw new AppError(401, 'Invalid email or password');
   }
 };
 
-const getUsers = async () => {
-  return await Admin.find({}).select('-password');
+const getUsers = async (query) => {
+  const userQuery = new QueryBuilder(Admin.find().select('-password'), query)
+    .search(['email'])
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+  return await userQuery.modelQuery;
 };
 
 const createUser = async (payload) => {
   const { email, password, role } = payload;
   const userExists = await Admin.findOne({ email });
   if (userExists) {
-    return { error: 'User already exists', status: 400 };
+    throw new AppError(400, 'User already exists');
   }
 
   const salt = await bcrypt.genSalt(10);
@@ -55,7 +63,7 @@ const createUser = async (payload) => {
       isBlocked: user.isBlocked,
     };
   } else {
-    return { error: 'Invalid user data', status: 400 };
+    throw new AppError(400, 'Invalid user data');
   }
 };
 
@@ -80,7 +88,7 @@ const updateUser = async (id, payload) => {
       isBlocked: updatedUser.isBlocked,
     };
   } else {
-    return { error: 'User not found', status: 404 };
+    throw new AppError(404, 'User not found');
   }
 };
 
@@ -91,7 +99,7 @@ const deleteUser = async (id) => {
     await Admin.deleteOne({ _id: user._id });
     return { message: 'User removed' };
   } else {
-    return { error: 'User not found', status: 404 };
+    throw new AppError(404, 'User not found');
   }
 };
 
@@ -108,7 +116,7 @@ const toggleBlockUser = async (id) => {
       isBlocked: updatedUser.isBlocked,
     };
   } else {
-    return { error: 'User not found', status: 404 };
+    throw new AppError(404, 'User not found');
   }
 };
 
