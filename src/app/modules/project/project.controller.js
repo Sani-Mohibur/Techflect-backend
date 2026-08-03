@@ -1,32 +1,31 @@
-import Project from './project.model.js';
+import { ProjectService } from './project.service.js';
 
 const getProjects = async (req, res) => {
-  const items = await Project.find();
+  const items = await ProjectService.getProjects();
   res.status(200).json(items);
 };
 
 const getProjectById = async (req, res) => {
-  const item = await Project.findById(req.params.id);
+  const item = await ProjectService.getProjectById(req.params.id);
   if (!item) { res.status(404); throw new Error('Project not found'); }
   res.status(200).json(item);
 };
 
 const createProject = async (req, res) => {
-  const item = await Project.create(req.body);
+  const item = await ProjectService.createProject(req.body);
   res.status(201).json(item);
 };
 
 const updateProject = async (req, res) => {
-  const item = await Project.findByIdAndUpdate(req.params.id, req.body, { new: true });
+  const item = await ProjectService.updateProject(req.params.id, req.body);
   if (!item) { res.status(404); throw new Error('Project not found'); }
   res.status(200).json(item);
 };
 
 const deleteProject = async (req, res) => {
-  const item = await Project.findById(req.params.id);
+  const item = await ProjectService.deleteProject(req.params.id);
   if (!item) { res.status(404); throw new Error('Project not found'); }
-  await item.deleteOne();
   res.status(200).json({ id: req.params.id });
 };
 
-export { getProjects, getProjectById, createProject, updateProject, deleteProject  };
+export { getProjects, getProjectById, createProject, updateProject, deleteProject };
