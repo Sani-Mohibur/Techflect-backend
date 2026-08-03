@@ -1,4 +1,4 @@
-import Admin from './admin.model.js';
+import User from './user.model.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import QueryBuilder from '../../builder/QueryBuilder.js';
@@ -11,18 +11,18 @@ const generateToken = (id) => {
 };
 
 const loginAdmin = async (email, password) => {
-  const admin = await Admin.findOne({ email });
+  const user = await User.findOne({ email });
 
-  if (admin && (await bcrypt.compare(password, admin.password))) {
-    if (admin.isBlocked) {
+  if (user && (await bcrypt.compare(password, user.password))) {
+    if (user.isBlocked) {
       throw new AppError(403, 'Not authorized, user is blocked');
     }
     return {
-      _id: admin.id,
-      email: admin.email,
-      role: admin.role,
-      isBlocked: admin.isBlocked,
-      token: generateToken(admin.id),
+      _id: user.id,
+      email: user.email,
+      role: user.role,
+      isBlocked: user.isBlocked,
+      token: generateToken(user.id),
     };
   } else {
     throw new AppError(401, 'Invalid email or password');
@@ -30,7 +30,7 @@ const loginAdmin = async (email, password) => {
 };
 
 const getUsers = async (query) => {
-  const userQuery = new QueryBuilder(Admin.find().select('-password'), query)
+  const userQuery = new QueryBuilder(User.find().select('-password'), query)
     .search(['email'])
     .filter()
     .sort()
@@ -41,7 +41,7 @@ const getUsers = async (query) => {
 
 const createUser = async (payload) => {
   const { email, password, role } = payload;
-  const userExists = await Admin.findOne({ email });
+  const userExists = await User.findOne({ email });
   if (userExists) {
     throw new AppError(400, 'User already exists');
   }
@@ -49,7 +49,7 @@ const createUser = async (payload) => {
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
 
-  const user = await Admin.create({
+  const user = await User.create({
     email,
     password: hashedPassword,
     role: role || 'moderator',
@@ -68,7 +68,7 @@ const createUser = async (payload) => {
 };
 
 const updateUser = async (id, payload) => {
-  const user = await Admin.findById(id);
+  const user = await User.findById(id);
 
   if (user) {
     user.email = payload.email || user.email;
@@ -93,10 +93,10 @@ const updateUser = async (id, payload) => {
 };
 
 const deleteUser = async (id) => {
-  const user = await Admin.findById(id);
+  const user = await User.findById(id);
 
   if (user) {
-    await Admin.deleteOne({ _id: user._id });
+    await User.deleteOne({ _id: user._id });
     return { message: 'User removed' };
   } else {
     throw new AppError(404, 'User not found');
@@ -104,7 +104,7 @@ const deleteUser = async (id) => {
 };
 
 const toggleBlockUser = async (id) => {
-  const user = await Admin.findById(id);
+  const user = await User.findById(id);
 
   if (user) {
     user.isBlocked = !user.isBlocked;

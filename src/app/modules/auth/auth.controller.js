@@ -20,7 +20,7 @@ const getMe = catchAsync(async (req, res) => {
     statusCode: 200,
     success: true,
     message: 'User profile retrieved successfully',
-    data: req.admin,
+    data: req.user,
   });
 });
 
