@@ -1,7 +1,7 @@
 import express from 'express';
 const router = express.Router();
 import { getTestimonials, getTestimonialById, createTestimonial, updateTestimonial, deleteTestimonial  } from './testimonial.controller.js';
-import { protect  } from '../../middleware/authMiddleware.js';
+import { protect  } from '../../middleware/auth.js';
 
 router.route('/')
   .get(getTestimonials)

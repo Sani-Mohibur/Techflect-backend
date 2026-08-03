@@ -9,7 +9,7 @@ import {
   deleteUser, 
   toggleBlockUser 
 } from './auth.controller.js';
-import { protect, authorizeRoles } from '../../middleware/authMiddleware.js';
+import { protect, authorizeRoles } from '../../middleware/auth.js';
 import { ROLES } from '../../utils/roles.js';
 
 router.post('/login', loginAdmin);

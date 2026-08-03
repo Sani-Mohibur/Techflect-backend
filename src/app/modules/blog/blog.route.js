@@ -1,7 +1,7 @@
 import express from 'express';
 const router = express.Router();
 import { getBlogs, getBlogById, createBlog, updateBlog, deleteBlog  } from './blog.controller.js';
-import { protect  } from '../../middleware/authMiddleware.js';
+import { protect  } from '../../middleware/auth.js';
 
 router.route('/')
   .get(getBlogs)

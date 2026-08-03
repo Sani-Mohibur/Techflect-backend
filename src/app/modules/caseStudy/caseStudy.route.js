@@ -1,7 +1,7 @@
 import express from 'express';
 const router = express.Router();
 import { getCaseStudys, getCaseStudyById, createCaseStudy, updateCaseStudy, deleteCaseStudy  } from './caseStudy.controller.js';
-import { protect  } from '../../middleware/authMiddleware.js';
+import { protect  } from '../../middleware/auth.js';
 
 router.route('/')
   .get(getCaseStudys)
