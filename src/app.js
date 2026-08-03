@@ -2,22 +2,12 @@ import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
 import cors from 'cors';
-import { errorHandler, notFound  } from './middleware/errorMiddleware.js';
-import connectDB from './config/db.js';
+import { errorHandler, notFound } from './app/middleware/globalErrorHandler.js';
+import connectDB from './app/config/db.js';
+import routes from './app/routes/index.js';
 
 // Connect to database
 connectDB();
-
-// Routes imports
-import authRoutes from './modules/auth/auth.route.js';
-import contactRoutes from './modules/contact/contact.route.js';
-import serviceRoutes from './modules/service/service.route.js';
-import projectRoutes from './modules/project/project.route.js';
-import caseStudyRoutes from './modules/caseStudy/caseStudy.route.js';
-import testimonialRoutes from './modules/testimonial/testimonial.route.js';
-import blogRoutes from './modules/blog/blog.route.js';
-import teamMemberRoutes from './modules/teamMember/teamMember.route.js';
-import faqRoutes from './modules/faq/faq.route.js';
 
 const app = express();
 
@@ -29,15 +19,7 @@ app.get('/', (req, res) => {
 });
 
 // Use routes here
-app.use('/api/auth', authRoutes);
-app.use('/api/contact', contactRoutes);
-app.use('/api/services', serviceRoutes);
-app.use('/api/projects', projectRoutes);
-app.use('/api/case-studies', caseStudyRoutes);
-app.use('/api/testimonials', testimonialRoutes);
-app.use('/api/blogs', blogRoutes);
-app.use('/api/team-members', teamMemberRoutes);
-app.use('/api/faqs', faqRoutes);
+app.use('/api', routes);
 
 app.use(notFound);
 app.use(errorHandler);
