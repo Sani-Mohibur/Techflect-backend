@@ -2,6 +2,7 @@ import express from 'express';
 const router = express.Router();
 import { 
   loginAdmin, 
+  logoutAdmin,
   getMe, 
   getUsers, 
   createUser, 
@@ -13,6 +14,7 @@ import { protect, authorizeRoles } from '../../middleware/auth.js';
 import { ROLES } from '../../utils/roles.js';
 
 router.post('/login', loginAdmin);
+router.post('/logout', logoutAdmin);
 router.get('/me', protect, getMe);
 
 // User management routes (Admin only)

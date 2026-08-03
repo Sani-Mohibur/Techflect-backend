@@ -6,9 +6,9 @@ import config from '../config/index.js';
 const protect = async (req, res, next) => {
   let token;
 
-  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+  if (req.cookies && req.cookies.jwt) {
     try {
-      token = req.headers.authorization.split(' ')[1];
+      token = req.cookies.jwt;
       const decoded = jwt.verify(token, config.jwt_secret);
       req.user = await User.findById(decoded.id).select('-password');
       

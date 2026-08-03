@@ -6,12 +6,36 @@ import pick from '../../utils/pick.js';
 const loginAdmin = catchAsync(async (req, res) => {
   const { email, password } = req.body;
   const result = await AuthService.loginAdmin(email, password);
+  
+  // Extract token to put into cookie
+  const { token, ...userData } = result;
+
+  res.cookie('jwt', token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
+    maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
+  });
 
   sendResponse(res, {
     statusCode: 200,
     success: true,
     message: 'User logged in successfully',
-    data: result,
+    data: userData,
+  });
+});
+
+const logoutAdmin = catchAsync(async (req, res) => {
+  res.cookie('jwt', '', {
+    httpOnly: true,
+    expires: new Date(0)
+  });
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'User logged out successfully',
+    data: null
   });
 });
 
@@ -82,6 +106,7 @@ const toggleBlockUser = catchAsync(async (req, res) => {
 
 export { 
   loginAdmin,
+  logoutAdmin,
   getMe,
   getUsers,
   createUser,
