@@ -10,7 +10,9 @@ const caseStudySchema = new mongoose.Schema({
   keyStats: [{
     number: { type: String },
     label: { type: String }
-  }]
+  }],
+  isHidden: { type: Boolean, default: false },
+  isMock: { type: Boolean, default: false }
 }, { timestamps: true });
 
 export default mongoose.model('CaseStudy', caseStudySchema);

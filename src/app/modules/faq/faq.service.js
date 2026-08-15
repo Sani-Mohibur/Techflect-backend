@@ -37,6 +37,9 @@ const deleteFAQ = async (id) => {
   if (!item) {
     throw new AppError(404, 'FAQ not found');
   }
+  if (item.isMock) {
+    throw new AppError(403, 'Mock data cannot be deleted');
+  }
   await item.deleteOne();
   return item;
 };
